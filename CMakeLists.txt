@@ -1,8 +1,16 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.14)
 
-project(livox_sdk2)
+project(livox_sdk2 LANGUAGES CXX C)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 
 message(STATUS "main project dir: " ${PROJECT_SOURCE_DIR})
 
@@ -12,8 +20,10 @@ if (CMAKE_CROSSCOMPILING)
 		CACHE STRING "Result from TRY_RUN" FORCE)
 endif()
 
+find_package(Threads REQUIRED)
+
 if (UNIX)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+	add_compile_options(-pthread)
 endif(UNIX)
 
 add_subdirectory(sdk_core)
